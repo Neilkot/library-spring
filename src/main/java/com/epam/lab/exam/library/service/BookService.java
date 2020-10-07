@@ -39,13 +39,19 @@ public class BookService {
 	}
 
 	public List<BookDTO> getAvaliableBooks(int page, int size) {
-		return bookRepository.getAvaliableBooks(PageRequest.of(page, size)).stream().map(BookDTO::from).collect(Collectors.toList());
+		return bookRepository.getAvaliableBooks(PageRequest.of(page, size)).stream().map(BookDTO::from)
+				.collect(Collectors.toList());
+	}
+
+	public long countAvaliableBooks() {
+		return bookRepository.countAvaliableBooks();
 	}
 
 	public List<BookDTO> getAvaliableBooks(QueryDTO dto, int page, int size) {
-		return bookRepository.getAvaliableBooks(dto.getQuery(), PageRequest.of(page, size)).stream().map(BookDTO::from).collect(Collectors.toList());
+		return bookRepository.getAvaliableBooks(dto.getQuery(), PageRequest.of(page, size)).stream().map(BookDTO::from)
+				.collect(Collectors.toList());
 	}
-	
+
 	public List<BookItemDTO> getBooks(int page, int size) {
 		return bookItemRepository.getBooks(PageRequest.of(page, size)).stream().map(BookItemDTO::from)
 				.collect(Collectors.toList());
@@ -73,7 +79,7 @@ public class BookService {
 				.orElseThrow(() -> ErrorType.BOOK_NOT_FOUND.ex());
 
 		Author author = authorRepository.findByName(bookDto.getAuthorName())
-				.orElseGet(() -> authorRepository.save(Author.builder().name(bookDto.getBookName()).build()));
+				.orElseGet(() -> authorRepository.save(Author.builder().name(bookDto.getAuthorName()).build()));
 
 		Book book = bookRepository
 				.findByNameAndAuthorAndPublisherAndPublishedYear(bookDto.getBookName(), author, bookDto.getPublisher(),
@@ -95,11 +101,7 @@ public class BookService {
 			}
 		});
 	}
-	
-	public long countAvaliableBooks() {
-		return bookRepository.countAvaliableBooks();
-	}
-	
+
 	public long countBooks() {
 		return bookItemRepository.countBooks();
 	}

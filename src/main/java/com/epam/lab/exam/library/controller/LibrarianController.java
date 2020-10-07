@@ -35,7 +35,7 @@ public class LibrarianController implements GenericController {
 
 	@GetMapping("/pending-request")
 	public ModelAndView allPendingRequestsGet(Model model, @ModelAttribute("userSession") UserSessionDTO userSession) {
-		return allPendingRequests(model, PageDTO.builder().page(1).build(), userSession);
+		return allPendingRequests(model, PageDTO.builder().currPage(0).build(), userSession);
 	}
 
 	@PostMapping("/pending-request")
@@ -45,18 +45,20 @@ public class LibrarianController implements GenericController {
 	}
 
 	private ModelAndView allPendingRequests(Model model, PageDTO dto, UserSessionDTO userSession) {
-
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting pending requests page={} size={}", page, size);
-		List<PendingRequestDTO> requests = bookRequestService.getPending(page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting approved requests currPage={} pageSize={}", currPage, pageSize);
+		List<PendingRequestDTO> requests = bookRequestService.getPending(currPage, pageSize);
 		ControllerHelper.addModelsForHeader(model);
 		model.addAttribute("request", new IdentityDTO());
 		updateLocation(model, View.LIBRARIAN_PENDING, userSession);
 
 		long noOfRecords = bookRequestService.countPending();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={} currPage={}", noOfRecords, noOfPages, currPage);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 
 		log.info("returning pending requests {}", requests);
@@ -66,7 +68,7 @@ public class LibrarianController implements GenericController {
 
 	@GetMapping("/approved-request")
 	public ModelAndView approvedReuqestGet(Model model, @ModelAttribute("userSession") UserSessionDTO userSession) {
-		return getApprovedReuqests(model, PageDTO.builder().page(1).build(), userSession);
+		return getApprovedReuqests(model, PageDTO.builder().currPage(0).build(), userSession);
 	}
 
 	@PostMapping("/approved-request")
@@ -76,17 +78,20 @@ public class LibrarianController implements GenericController {
 	}
 
 	private ModelAndView getApprovedReuqests(Model model, PageDTO dto, UserSessionDTO userSession) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting approved requests page={} size={}", page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting approved requests currPage={} pageSize={}", currPage, pageSize);
 
 		ControllerHelper.addModelsForHeader(model);
 		model.addAttribute("return-book", new IdentityDTO());
-		List<BookRequestDTO> requests = bookRequestService.getApproved(page, size);
+		List<BookRequestDTO> requests = bookRequestService.getApproved(currPage, pageSize);
 		updateLocation(model, View.READER_REQUEST, userSession);
 		long noOfRecords = bookRequestService.countApproved();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={} currPage={}", noOfRecords, noOfPages, currPage);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 
 		log.info("returning approved requests {}", requests);

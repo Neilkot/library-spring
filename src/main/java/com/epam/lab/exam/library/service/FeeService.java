@@ -37,7 +37,7 @@ public class FeeService {
 		Instant now = Instant.now();
 		ZonedDateTime current = ZonedDateTime.ofInstant(now, ZoneId.of("UTC"));
 		ZonedDateTime expire = ZonedDateTime.ofInstant(expirationDate, ZoneId.of("UTC"));
-		long daysExpired = ChronoUnit.DAYS.between(expire, current);
+		long daysExpired = ChronoUnit.DAYS.between(expire, current) + 1;
 		BigDecimal bigDecimal = new BigDecimal(daysExpired * dailyFee);
 		bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 		return bigDecimal.floatValue();

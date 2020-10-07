@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 public class PageDTO {
 
 	private Integer noOfPages;
-	private Integer page;
-
-	public Integer getPage() {
-		return Optional.ofNullable(page).orElse(1);
+	private Integer currPage;
+	private Integer pageSize;
+	
+	public Integer getCurrPage() {
+		return Optional.ofNullable(currPage).orElse(0);
 	}
 }

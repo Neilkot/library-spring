@@ -40,7 +40,7 @@ public class BookRequestController implements GenericController {
 	@GetMapping("/reader-request")
 	public ModelAndView allApprovedReaderRequestGet(Model model, @ModelAttribute("page") PageDTO dto,
 			@ModelAttribute("userSession") UserSessionDTO userSession) {
-		return allApprovedReaderRequests(model, PageDTO.builder().page(1).build(), userSession);
+		return allApprovedReaderRequests(model, PageDTO.builder().currPage(0).build(), userSession);
 	}
 
 	@PostMapping("/reader-request")
@@ -50,10 +50,10 @@ public class BookRequestController implements GenericController {
 	}
 
 	private ModelAndView allApprovedReaderRequests(Model model, PageDTO dto, UserSessionDTO userSession) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting books page={} size={}", page, size);
-		List<BookRequestDTO> approved = bookRequestService.getApproved(userSession.getId(), page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting approved requests currPage={} pageSize={}", currPage, pageSize);
+		List<BookRequestDTO> approved = bookRequestService.getApproved(userSession.getId(), currPage, pageSize);
 
 		model.addAttribute("login", new LoginDTO());
 		model.addAttribute("register", new RegisterDTO());
@@ -62,7 +62,10 @@ public class BookRequestController implements GenericController {
 		updateLocation(model, View.READER_REQUEST, userSession);
 		long noOfRecords = bookRequestService.countApprovedReaderRequests(userSession.getId());
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={} currPage={}", noOfRecords, noOfPages, currPage);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 		
 		log.info("returning approved requests {}", approved);

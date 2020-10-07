@@ -38,7 +38,7 @@
 			</li>
 			<li class="nav-item">
 				<button type="button" class="btn btn-primary" data-toggle="modal"
-					data-target="#register-modal">Register</button>
+					data-target="#register-modal"><fmt:message key="header.register" /></button>
 			</li>
 		</c:when>
 		<c:otherwise>
@@ -54,14 +54,14 @@
 						<div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button"
 								id="dropdownMenuButton" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">Menu</button>
+								aria-haspopup="true" aria-expanded="false"><fmt:message key="header.menu" /></button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" href="#"
-									onclick="location.href='/admin-book'"> Books</a> <a
+									onclick="location.href='/admin-book'"> <fmt:message key="header.reader.books" /></a> <a
 									class="dropdown-item" href="#"
-									onclick="location.href='/admin-librarian'"> Librarians</a> <a
+									onclick="location.href='/admin-librarian'"> <fmt:message key="header.admin.librarians" /></a> <a
 									class="dropdown-item" href="#"
-									onclick="location.href='/admin-reader'"> Readers</a>
+									onclick="location.href='/admin-reader'"> <fmt:message key="header.admin.users" /></a>
 							</div>
 						</div>
 				</c:when>
@@ -76,12 +76,12 @@
 						<div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button"
 								id="dropdownMenuButton" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">Menu</button>
+								aria-haspopup="true" aria-expanded="false"><fmt:message key="header.menu" /></button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" href="#"
-									onclick="location.href='/pending-request'">Pending</a> <a
+									onclick="location.href='/pending-request'"><fmt:message key="header.pending" /></a> <a
 									class="dropdown-item" href="#"
-									onclick="location.href='/approved-request'">Approved</a>
+									onclick="location.href='/approved-request'"><fmt:message key="header.approved" /></a>
 							</div>
 						</div>
 					</li>
@@ -97,12 +97,12 @@
 						<div class="dropdown">
 							<button class="btn btn-secondary dropdown-toggle" type="button"
 								id="dropdownMenuButton" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">Menu</button>
+								aria-haspopup="true" aria-expanded="false"><fmt:message key="header.menu" /></button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 								<a class="dropdown-item" href="#"
-									onclick="location.href='/reader-book'">Books</a> <a
+									onclick="location.href='/reader-book'"><fmt:message key="header.reader.books" /></a> <a
 									class="dropdown-item" href="#"
-									onclick="location.href='reader-request'">Requests</a>
+									onclick="location.href='reader-request'"><fmt:message key="header.reader.requests" /></a>
 							</div>
 						</div>
 					</li>
@@ -110,11 +110,11 @@
 			</c:choose>
 			<li class="nav-item">
 				<button type="button" class="btn btn-primary" data-toggle="modal"
-					onclick="location.href='/logout'">Logout</button>
+					onclick="location.href='/logout'"><fmt:message key="header.logout" /></button>
 			</li>
 			<li class="nav-item">
 				<button type="button" class="btn btn-primary" data-toggle="modal">
-					Hello
+					<fmt:message key="header.greetings" />
 					<c:out value="${userSession.username}" />
 				</button>
 		</c:otherwise>
@@ -132,7 +132,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+				<h5 class="modal-title" id="exampleModalLabel"><fmt:message key="header.login.entermsg" /></h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -143,18 +143,18 @@
 					modelAttribute="login">
 					<table class="table">
 						<tr>
-							<td><form:label path="username">Login</form:label></td>
+							<td><form:label path="username"><fmt:message key="header.login" /></form:label></td>
 							<td><form:input path="username" required="required" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="password">Password</form:label></td>
+							<td><form:label path="password"><fmt:message key="header.password" /></form:label></td>
 							<td><form:password path="password" id="login-password"
 									required="required" /></td>
 						</tr>
 					</table>
 
 					<div class="modal-footer">
-						<input class="btn btn-primary" type="submit" value="Submit" />
+						<input class="btn btn-primary" type="submit" value="<fmt:message key="header.submit" />" />
 					</div>
 				</form:form>
 			</div>
@@ -167,7 +167,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+				<h5 class="modal-title" id="exampleModalLabel"><fmt:message key="header.registration.entermsg" /></h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -178,28 +178,28 @@
 					modelAttribute="register" id="registration-form">
 					<table class="table">
 						<tr>
-							<td><form:label path="username">Login</form:label></td>
+							<td><form:label path="username"><fmt:message key="header.login" /></form:label></td>
 							<td><form:input path="username" required="required" /></td>
 						</tr>
 						<tr>
-							<td><form:label path="password">Password</form:label></td>
+							<td><form:label path="password"><fmt:message key="header.password" /></form:label></td>
 							<td><form:password path="password" id="password"
 									required="required" /></td>
 						</tr>
 						<tr>
 							<td><form:label path="firstName">
-                      First Name</form:label></td>
+                     <fmt:message key="header.firstname" /></form:label></td>
 							<td><form:input path="firstName" required="required" /></td>
 						</tr>
 						<tr>
 							<td><form:label path="lastName">
-                      Last Name</form:label></td>
+                       <fmt:message key="header.lastname" /></form:label></td>
 							<td><form:input path="lastName" required="required" /></td>
 						</tr>
 					</table>
 
 					<div class="modal-footer">
-						<input class="btn btn-primary" type="submit" value="Submit" />
+						<input class="btn btn-primary" type="submit" value="<fmt:message key="header.submit" />" />
 					</div>
 				</form:form>
 			</div>
@@ -211,17 +211,18 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Error</h5>
+				<h5 class="modal-title"><fmt:message key="header.error" /></h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
+				<p>${errorDesc.code}</p>
 				<p>${errorDesc.message}</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="header.close" /></button>
 			</div>
 		</div>
 	</div>

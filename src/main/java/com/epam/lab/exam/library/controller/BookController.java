@@ -42,7 +42,7 @@ public class BookController implements GenericController {
 	@GetMapping({ "/reader-book", "/" })
 	public ModelAndView getBooksGet(Model model,
 			@Value("#{session.getAttribute('userSession')}") UserSessionDTO userSession) {
-		return getBooks(model, PageDTO.builder().page(1).build(), userSession);
+		return getBooks(model, PageDTO.builder().currPage(0).build(), userSession);
 	}
 
 	@PostMapping({ "/reader-book", "/" })
@@ -50,12 +50,12 @@ public class BookController implements GenericController {
 			@Value("#{session.getAttribute('userSession')}") UserSessionDTO userSession) {
 		return getBooks(model, dto, userSession);
 	}
-
+	
 	private ModelAndView getBooks(Model model, PageDTO dto, UserSessionDTO userSession) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting books page={} size={}", page, size);
-		List<BookDTO> books = bookService.getAvaliableBooks(page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting books currPage={} pageSize={}", currPage, pageSize);
+		List<BookDTO> books = bookService.getAvaliableBooks(currPage, pageSize);
 
 		model.addAttribute("query", new QueryDTO());
 		model.addAttribute("login", new LoginDTO());
@@ -64,8 +64,10 @@ public class BookController implements GenericController {
 		updateLocation(model, View.READER_BOOK, userSession);
 
 		long noOfRecords = bookService.countAvaliableBooks();
-		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / pageSize);
+		log.info("noOfRecords={} noOfPages={}", noOfRecords, noOfPages);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
 		model.addAttribute("page", dto);
 
 		log.info("returning books {}", books);
@@ -75,12 +77,12 @@ public class BookController implements GenericController {
 
 	@PostMapping("/book-query")
 	public ModelAndView getBooksQuery(Model model, @ModelAttribute("query") QueryDTO dto) {
-		log.info("getting books page");
+		log.info("getting books query page");
 		List<BookDTO> books = dto != null && StringUtils.isNotEmpty(dto.getQuery())
 				? bookService.getAvaliableBooks(dto, 0, configService.getDefaultPageSize())
 				: bookService.getAvaliableBooks(0, configService.getDefaultPageSize());
 		log.info("{} books returned", books.size());
-		model.addAttribute("page", PageDTO.builder().page(1).build());
+		model.addAttribute("page", PageDTO.builder().currPage(0).noOfPages(1).build());
 		model.addAttribute("query", new QueryDTO());
 		model.addAttribute("login", new LoginDTO());
 		model.addAttribute("register", new RegisterDTO());
@@ -90,7 +92,7 @@ public class BookController implements GenericController {
 
 	@GetMapping("/admin-book")
 	public ModelAndView getAdminBooksGet(Model model, @ModelAttribute("userSession") UserSessionDTO userSession) {
-		return getAdminBooks(model, PageDTO.builder().page(1).build(), userSession);
+		return getAdminBooks(model, PageDTO.builder().build(), userSession);
 	}
 
 	@PostMapping("/admin-book")
@@ -100,10 +102,11 @@ public class BookController implements GenericController {
 	}
 
 	private ModelAndView getAdminBooks(Model model, PageDTO dto, UserSessionDTO userSession) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting books page={} size={}", page, size);
-		List<BookItemDTO> books = bookService.getBooks(page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting books currPage={} pageSize={}", currPage, pageSize);
+		log.info("getting books pageSize{}",  pageSize);
+		List<BookItemDTO> books = bookService.getBooks(currPage, pageSize);
 		model.addAttribute("book", new BookItemDTO());
 		model.addAttribute("book-delete", new IdentityDTO());
 		model.addAttribute("book-delete", new IdentityDTO());
@@ -113,7 +116,10 @@ public class BookController implements GenericController {
 
 		long noOfRecords = bookService.countBooks();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={}", noOfRecords, noOfPages);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 
 		log.info("returning admin books {}", books);

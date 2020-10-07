@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,18 +31,20 @@
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-	<h1>Pending Requests List</h1>
+	<h1>
+		<fmt:message key="pending.welcome" />
+	</h1>
 
 	<table id="content-table" class="table" cellspacing="0" width="100%">
 		<thead>
 			<tr>
-				<td>ID</td>
-				<td>User Name</td>
-				<td>Name</td>
-				<td>Author</td>
-				<td>Type</td>
-				<td>Create Date</td>
-				<td>Action</td>
+				<td><fmt:message key="table.book.id" /></td>
+				<td><fmt:message key="table.book.username" /></td>
+				<td><fmt:message key="table.book.name" /></td>
+				<td><fmt:message key="table.book.author.name" /></td>
+				<td><fmt:message key="table.book.type" /></td>
+				<td><fmt:message key="table.book.createdate" /></td>
+				<td><fmt:message key="table.book.action" /></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,9 +57,10 @@
 					<td>${request.requestType}</td>
 					<td class="table-column-date">${request.createDate}</td>
 					<td><a class="dropdown-item" href="#"
-						onclick="approveRequest(${request.requestId})">Approve</a> <a
-						class="dropdown-item" href="#"
-						onclick="cancelRequest(${request.requestId})">Cancel</a></td>
+						onclick="approveRequest(${request.requestId})"><fmt:message
+								key="table.book.approve" /></a> <a class="dropdown-item" href="#"
+						onclick="cancelRequest(${request.requestId})"><fmt:message
+								key="table.book.cancel" /></a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -64,33 +68,35 @@
 
 	<form:form id="request-page" method="POST" action="/pending-request"
 		modelAttribute="page">
-		<form:hidden id="page" path="page" />
+		<form:hidden id="page" path="currPage" />
 	</form:form>
 
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-right">
-			<c:if test="${page.page != 1}">
+			<c:if test="${page.currPage != 0}">
 				<li class="page-item"><a class="page-link" href="#"
-					onclick="requestPage(${page.page - 1});">Previous</a></li>
+					onclick="requestPage(${page.currPage - 1});"><fmt:message
+							key="pagination.previous" /></a></li>
 			</c:if>
 			<c:forEach begin="1" end="${page.noOfPages}" var="i">
 				<c:choose>
-					<c:when test="${page.page eq i}">
+					<c:when test="${i == page.currPage + 1}">
 						<li class="page-item active"><a class="page-link">${i}</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item"><a class="page-link" href="#"
-							onclick="requestPage(${i});">${i}</a></li>
+							onclick="requestPage(${i - 1});">${i}</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
-			<c:if test="${page.page lt page.noOfPages}">
+			<c:if test="${page.noOfPages > page.currPage + 1}">
 				<li class="page-item"><a class="page-link" href="#"
-					onclick="requestPage(${page.page + 1});">Next</a></li>
+					onclick="requestPage(${page.currPage + 1});"><fmt:message
+							key="pagination.next" /></a></li>
 			</c:if>
 		</ul>
 	</nav>
-	
+
 	<form:form id="approve-request-form" method="POST"
 		action="/request-approve" modelAttribute="request">
 		<form:hidden id="approve-request-id" path="id" />

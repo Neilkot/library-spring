@@ -3,6 +3,7 @@ package com.epam.lab.exam.library;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable().userDetailsService(customUserDetailsService)//
-				.authorizeRequests().antMatchers("/css/**", "/js/**").permitAll()//
-				.antMatchers("/reader-book", "/register", "/login", "/logout", "/error", "/book-query","/home", "/").permitAll()//
+				.authorizeRequests().antMatchers(HttpMethod.POST, "/**").permitAll().antMatchers("/css/**", "/js/**").permitAll()//
+				.antMatchers("/reader-book", "/register", "/login", "/logout", "/error", "/book-query","/home", "/", "/#", "#").permitAll()//
 				.antMatchers("/admin-book", "/admin-librarian", "/admin-reader", "/book-add", "/book-update",
 						"/book-delete", "/librarian-create", "/librarian-delete", "/reader-status")
 				.hasRole(RoleType.ADMIN.toString())
@@ -43,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/reader-request").hasRole(RoleType.READER.toString())//
 				.antMatchers("/request-submit").hasRole("ACTIVE_USER").anyRequest().authenticated()//
 				.and().exceptionHandling().authenticationEntryPoint(errorHandler.getForbiddenHandler())//
-				.and().formLogin().loginPage("/login").successForwardUrl("/login").failureForwardUrl("/error").permitAll()//
+				.and().formLogin().loginPage("/login").successForwardUrl("/login").failureForwardUrl("/reader-book").permitAll()//
 				.and().httpBasic()//
 				.and().logout()//
 				.logoutSuccessUrl("/reader-book").logoutUrl("/logout")

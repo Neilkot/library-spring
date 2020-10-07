@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,19 +31,23 @@
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-	<h1>Librarians List</h1>
+	<h1>
+		<fmt:message key="admin.librarianssmsg" />
+	</h1>
 
 	<button type="button" class="btn btn-primary" data-toggle="modal"
-		data-target="#create-modal">New</button>
+		data-target="#create-modal">
+		<fmt:message key="admin.newbutton" />
+	</button>
 
 	<table id="content-table" class="table" cellspacing="0" width="100%">
 		<thead>
 			<tr>
-				<td>ID</td>
-				<td>Login</td>
-				<td>First Name</td>
-				<td>Last Name</td>
-				<td>Action</td>
+				<td><fmt:message key="table.book.id" /></td>
+				<td><fmt:message key="admin.login" /></td>
+				<td><fmt:message key="admin.firstname" /></td>
+				<td><fmt:message key="admin.lastname" /></td>
+				<td><fmt:message key="table.book.action" /></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,7 +60,9 @@
 					<td>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#delete-modal"
-							onclick="fillDeleteForm(${librarian.id})">Delete</button>
+							onclick="fillDeleteForm(${librarian.id})">
+							<fmt:message key="admin.deletebutton" />
+						</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -65,54 +72,63 @@
 
 	<form:form id="request-page" method="POST" action="/admin-librarian"
 		modelAttribute="page">
-		<form:hidden id="page" path="page" />
+		<form:hidden id="page" path="currPage" />
 	</form:form>
 
 	<nav aria-label="Page navigation example">
-	<ul class="pagination justify-content-right">
-		<c:if test="${page.page != 1}">
-			<li class="page-item"><a class="page-link" href="#"
-				onclick="requestPage(${page.page - 1});">Previous</a></li>
-		</c:if>
-		<c:forEach begin="1" end="${page.noOfPages}" var="i">
-			<c:choose>
-				<c:when test="${page.page eq i}">
-					<li class="page-item active"><a class="page-link">${i}</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="#"
-						onclick="requestPage(${i});">${i}</a></li>
-				</c:otherwise>
-			</c:choose>
-		</c:forEach>
-		<c:if test="${page.page lt page.noOfPages}">
-			<li class="page-item"><a class="page-link" href="#"
-				onclick="requestPage(${page.page + 1});">Next</a></li>
-		</c:if>
-	</ul>
+		<ul class="pagination justify-content-right">
+			<c:if test="${page.currPage != 0}">
+				<li class="page-item"><a class="page-link" href="#"
+					onclick="requestPage(${page.currPage - 1});"><fmt:message
+							key="pagination.previous" /></a></li>
+			</c:if>
+			<c:forEach begin="1" end="${page.noOfPages}" var="i">
+				<c:choose>
+					<c:when test="${i == page.currPage + 1}">
+						<li class="page-item active"><a class="page-link">${i}</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link" href="#"
+							onclick="requestPage(${i - 1});">${i}</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${page.noOfPages > page.currPage + 1}">
+				<li class="page-item"><a class="page-link" href="#"
+					onclick="requestPage(${page.currPage + 1});"><fmt:message
+							key="pagination.next" /></a></li>
+			</c:if>
+		</ul>
 	</nav>
 
 	<div id="delete-modal" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Delete Librarian</h5>
+					<h5 class="modal-title">
+						<fmt:message key="admin.delete.librarial" />
+					</h5>
 					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
+						aria-label="<fmt:message key="header.error.close" />">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<p>Are you sure you wish to delete librarian?</p>
+					<p>
+						<fmt:message key="admin.delete.msg" />
+					</p>
 				</div>
 				<div class="modal-footer">
 					<form:form method="POST" action="/librarian-delete"
 						modelAttribute="delete-librarian">
 						<form:hidden id="delete-librarian-id" path="id" />
-						<input class="btn btn-primary" type="submit" value="Yes" />
+						<input class="btn btn-primary" type="submit"
+							value="<fmt:message key="admin.yes" />" />
 					</form:form>
 					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">No</button>
+						data-dismiss="modal">
+						<fmt:message key="admin.nobutton" />
+					</button>
 				</div>
 			</div>
 		</div>
@@ -123,7 +139,9 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">New Librarian</h5>
+					<h5 class="modal-title" id="exampleModalLabel">
+						<fmt:message key="admin.createlibrarian" />
+					</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -134,26 +152,35 @@
 						action="/librarian-create" modelAttribute="librarian">
 						<table class="table">
 							<tr>
-								<td><form:label path="username"> Login</form:label></td>
+								<td><form:label path="username">
+										<fmt:message key="header.login" />
+									</form:label></td>
 								<td><form:input path="username" required="required" /></td>
 							</tr>
 							<tr>
-								<td><form:label path="password"> Password</form:label></td>
+								<td><form:label path="password">
+										<fmt:message key="header.password" />
+									</form:label></td>
 								<td><form:password id="create-password" path="password"
 										required="required" /></td>
 							</tr>
 							<tr>
-								<td><form:label path="firstName"> First Name</form:label></td>
+								<td><form:label path="firstName">
+										<fmt:message key="header.firstname" />
+									</form:label></td>
 								<td><form:input path="firstName" required="required" /></td>
 							</tr>
 							<tr>
-								<td><form:label path="lastName"> Last Name</form:label></td>
+								<td><form:label path="lastName">
+										<fmt:message key="header.lastname" />
+									</form:label></td>
 								<td><form:input path="lastName" required="required" /></td>
 							</tr>
 						</table>
 
 						<div class="modal-footer">
-							<input class="btn btn-primary" type="submit" value="Submit" />
+							<input class="btn btn-primary" type="submit"
+								value="<fmt:message key="header.submit" />" />
 						</div>
 					</form:form>
 				</div>

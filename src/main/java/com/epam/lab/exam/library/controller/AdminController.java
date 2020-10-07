@@ -37,7 +37,7 @@ public class AdminController {
 
 	@GetMapping("/admin-librarian")
 	public ModelAndView getLibrariansGet(Model model) {
-		return getLibrarians(model, PageDTO.builder().page(1).build());
+		return getLibrarians(model, PageDTO.builder().currPage(0).build());
 	}
 
 	@PostMapping("/admin-librarian")
@@ -46,10 +46,10 @@ public class AdminController {
 	}
 
 	private ModelAndView getLibrarians(Model model, PageDTO dto) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting librarians page={} size={}", page, size);
-		List<UserDTO> librarians = userService.getLibrarians(page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting librarians currPage={} pageSize={}", currPage, pageSize);
+		List<UserDTO> librarians = userService.getLibrarians(currPage, pageSize);
 
 		ControllerHelper.addModelsForHeader(model);
 		model.addAttribute("delete-librarian", new IdentityDTO());
@@ -57,7 +57,10 @@ public class AdminController {
 
 		long noOfRecords = userService.countLibrarians();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={}", noOfRecords, noOfPages);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 
 		log.info("returning librarians {}", librarians);
@@ -81,7 +84,7 @@ public class AdminController {
 
 	@GetMapping("/admin-reader")
 	public ModelAndView getReadersGet(Model model) {
-		return getReaders(model, PageDTO.builder().page(1).build());
+		return getReaders(model, PageDTO.builder().currPage(0).build());
 	}
 
 	@PostMapping("/admin-reader")
@@ -90,17 +93,20 @@ public class AdminController {
 	}
 
 	private ModelAndView getReaders(Model model, PageDTO dto) {
-		int page = dto.getPage() - 1;
-		int size = configService.getDefaultPageSize();
-		log.info("getting readers page={} size={}", page, size);
+		int currPage = dto.getCurrPage();
+		int pageSize = configService.getDefaultPageSize();
+		log.info("getting readers currPage={} pageSize={}", currPage, pageSize);
 
 		ControllerHelper.addModelsForHeader(model);
-		List<UserDTO> readers = userService.getReaders(page, size);
+		List<UserDTO> readers = userService.getReaders(currPage, pageSize);
 		model.addAttribute("is-blocked", new UserDTO());
 
 		long noOfRecords = userService.countLibrarians();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / configService.getDefaultPageSize());
+		log.info("noOfRecords={} noOfPages={} currPage={}", noOfRecords, noOfPages, currPage);
 		dto.setNoOfPages(noOfPages);
+		dto.setPageSize(pageSize);
+		dto.setCurrPage(currPage);
 		model.addAttribute("page", dto);
 
 		log.info("returning librarians {}", readers);
