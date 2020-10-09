@@ -32,7 +32,7 @@ public class Book {
 	@Column(nullable = false)
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id", nullable = false)
 	private Author author;
 	

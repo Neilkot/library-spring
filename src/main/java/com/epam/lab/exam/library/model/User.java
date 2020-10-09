@@ -41,7 +41,7 @@ public class User {
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id", nullable=false)
 	private Role role;
 

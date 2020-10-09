@@ -2,10 +2,8 @@ package com.epam.lab.exam.library.service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,6 @@ import com.epam.lab.exam.library.model.BookRequest;
 import com.epam.lab.exam.library.model.BookRequestJournal;
 import com.epam.lab.exam.library.model.BookRequestType;
 import com.epam.lab.exam.library.model.User;
-import com.epam.lab.exam.library.repository.AuthorRepository;
 import com.epam.lab.exam.library.repository.BookItemRepository;
 import com.epam.lab.exam.library.repository.BookRequestJournalRepository;
 import com.epam.lab.exam.library.repository.BookRequestRepository;

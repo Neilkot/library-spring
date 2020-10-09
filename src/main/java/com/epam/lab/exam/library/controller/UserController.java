@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +61,7 @@ public class UserController {
 	public String logout(HttpSession session, @ModelAttribute("userSession") UserSessionDTO userSession)
 			throws ClientRequestException {
 		if (userSession != null) {
+			SecurityContextHolder.clearContext();
 			log.info("user logging out {}", userSession);
 			session.invalidate();
 		} else {

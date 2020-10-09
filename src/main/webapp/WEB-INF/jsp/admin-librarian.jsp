@@ -189,15 +189,6 @@
 	</div>
 </body>
 <script>
-	$(document).ready(function() {
-		$("#create-form").on("submit", function() {
-			var password = $("#create-password");
-			if(password) {
-				var checksum = md5(password);
-				$("#create-password").val(checksum);
-			}
-	    });
-	});
 
 	function fillDeleteForm(librarianId) {
 		$("#delete-librarian-id").val(librarianId)

@@ -27,15 +27,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BookService {
 
-	@Autowired
 	private AuthorRepository authorRepository;
 
 	private BookRepository bookRepository;
 	private BookItemRepository bookItemRepository;
 
-	public BookService(BookRepository bookRepository, BookItemRepository bookItemRepository) {
+	public BookService(BookRepository bookRepository, BookItemRepository bookItemRepository, AuthorRepository authorRepository) {
 		this.bookRepository = bookRepository;
 		this.bookItemRepository = bookItemRepository;
+		this.authorRepository = authorRepository;
 	}
 
 	public List<BookDTO> getAvaliableBooks(int page, int size) {

@@ -28,7 +28,7 @@ public class BookItem {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 

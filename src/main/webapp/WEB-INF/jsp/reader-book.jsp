@@ -30,6 +30,16 @@
 <!-- Plugin file -->
 <script src="./js/addons/datatables.min.js"></script>
 </head>
+<c:choose>
+	<c:when test="${cookie.get('locale').value == 'en'}">
+		<fmt:setLocale value='en' scope="session" />
+	</c:when>
+	<c:otherwise>
+		<fmt:setLocale value='ua' scope="session" />
+	</c:otherwise>
+</c:choose>
+<fmt:requestEncoding value="UTF-8" />
+<fmt:setBundle basename="locale" />
 <body>
 	<jsp:include page="header.jsp" />
 	<h1>

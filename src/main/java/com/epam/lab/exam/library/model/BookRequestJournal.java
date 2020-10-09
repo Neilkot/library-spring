@@ -30,7 +30,7 @@ public class BookRequestJournal {
 	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_request_id", nullable = false)
 	private BookRequest bookRequest;
 

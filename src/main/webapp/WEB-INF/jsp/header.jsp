@@ -8,7 +8,6 @@
 <head>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="js/md5.js"></script>
 <script src="js/globalVars.js"></script>
 </head>
 
@@ -256,20 +255,6 @@
 		$("#ua").click(function() {
 			document.cookie = "locale=ua";
 			location.reload();
-		});
-		$("#registration-form").on("submit", function() {
-			var password = $("#password");
-			if (password) {
-				var checksum = md5(password);
-				$("#password").val(checksum);
-			}
-		});
-		$("#login-form").on("submit", function() {
-			var password = $("#login-password");
-			if (password) {
-				var checksum = md5(password);
-				$("#login-password").val(checksum);
-			}
 		});
 
 		formatDates();

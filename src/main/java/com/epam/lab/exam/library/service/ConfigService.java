@@ -20,4 +20,7 @@ public class ConfigService {
 
 	@Value("${default.page.size}")
 	private Integer defaultPageSize;
+	
+	@Value("${checksum.algorithm}")
+	private String checksumAlgorithm;
 }
