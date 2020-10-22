@@ -1,7 +1,10 @@
 package com.epam.lab.exam.library.controller;
 
-import java.util.List;
-
+import com.epam.lab.exam.library.dto.*;
+import com.epam.lab.exam.library.exception.ClientRequestException;
+import com.epam.lab.exam.library.service.BookService;
+import com.epam.lab.exam.library.service.ConfigService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,20 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.epam.lab.exam.library.dto.BookDTO;
-import com.epam.lab.exam.library.dto.BookItemDTO;
-import com.epam.lab.exam.library.dto.IdentityDTO;
-import com.epam.lab.exam.library.dto.LoginDTO;
-import com.epam.lab.exam.library.dto.PageDTO;
-import com.epam.lab.exam.library.dto.QueryDTO;
-import com.epam.lab.exam.library.dto.RegisterDTO;
-import com.epam.lab.exam.library.dto.SubmitRequestDTO;
-import com.epam.lab.exam.library.dto.UserSessionDTO;
-import com.epam.lab.exam.library.exception.ClientRequestException;
-import com.epam.lab.exam.library.service.BookService;
-import com.epam.lab.exam.library.service.ConfigService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -55,7 +45,7 @@ public class BookController implements GenericController {
 		int currPage = dto.getCurrPage();
 		int pageSize = configService.getDefaultPageSize();
 		log.info("getting books currPage={} pageSize={}", currPage, pageSize);
-		List<BookDTO> books = bookService.getAvaliableBooks(currPage, pageSize);
+		List<BookDTO> books = bookService.getAvailableBooks(currPage, pageSize);
 
 		model.addAttribute("query", new QueryDTO());
 		model.addAttribute("login", new LoginDTO());
@@ -63,7 +53,7 @@ public class BookController implements GenericController {
 		model.addAttribute("request", new SubmitRequestDTO());
 		updateLocation(model, View.READER_BOOK, userSession);
 
-		long noOfRecords = bookService.countAvaliableBooks();
+		long noOfRecords = bookService.countAvailableBooks();
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / pageSize);
 		log.info("noOfRecords={} noOfPages={}", noOfRecords, noOfPages);
 		dto.setNoOfPages(noOfPages);
@@ -79,8 +69,8 @@ public class BookController implements GenericController {
 	public ModelAndView getBooksQuery(Model model, @ModelAttribute("query") QueryDTO dto) {
 		log.info("getting books query page");
 		List<BookDTO> books = dto != null && StringUtils.isNotEmpty(dto.getQuery())
-				? bookService.getAvaliableBooks(dto, 0, configService.getDefaultPageSize())
-				: bookService.getAvaliableBooks(0, configService.getDefaultPageSize());
+				? bookService.getAvailableBooks(dto, 0, configService.getDefaultPageSize())
+				: bookService.getAvailableBooks(0, configService.getDefaultPageSize());
 		log.info("{} books returned", books.size());
 		model.addAttribute("page", PageDTO.builder().currPage(0).noOfPages(1).build());
 		model.addAttribute("query", new QueryDTO());

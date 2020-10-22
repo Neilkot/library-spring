@@ -1,14 +1,12 @@
 package com.epam.lab.exam.library.repository;
 
-import java.util.Optional;
-
+import com.epam.lab.exam.library.model.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.epam.lab.exam.library.model.Author;
+import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
 	
 	Optional<Author> findByName(String name);
-	
 
 }

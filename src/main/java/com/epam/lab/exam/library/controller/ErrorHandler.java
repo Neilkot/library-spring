@@ -1,31 +1,24 @@
 package com.epam.lab.exam.library.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.epam.lab.exam.library.dto.ErrorDTO;
 import com.epam.lab.exam.library.dto.UserSessionDTO;
 import com.epam.lab.exam.library.exception.ClientRequestException;
 import com.epam.lab.exam.library.exception.ErrorType;
 import com.epam.lab.exam.library.service.MessageService;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Slf4j
 @ControllerAdvice
@@ -40,10 +33,6 @@ public class ErrorHandler {
 		@Override
 		public void commence(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException authException) throws IOException, ServletException {
-			authException.printStackTrace();
-			if(authException.getCause() !=null) {
-				authException.getCause().printStackTrace();
-			}
 			UserSessionDTO userSession = (UserSessionDTO) request.getSession().getAttribute("userSession");
 			request.setAttribute("errorDesc", ErrorDTO.builder().message(ErrorType.FORBIDDEN.getMessageCode())
 					.code(ErrorType.FORBIDDEN.getErrorCode()).build());

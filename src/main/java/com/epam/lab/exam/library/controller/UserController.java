@@ -1,8 +1,12 @@
 package com.epam.lab.exam.library.controller;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+import com.epam.lab.exam.library.dto.LoginDTO;
+import com.epam.lab.exam.library.dto.RegisterDTO;
+import com.epam.lab.exam.library.dto.UserDTO;
+import com.epam.lab.exam.library.dto.UserSessionDTO;
+import com.epam.lab.exam.library.exception.ClientRequestException;
+import com.epam.lab.exam.library.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.epam.lab.exam.library.dto.LoginDTO;
-import com.epam.lab.exam.library.dto.RegisterDTO;
-import com.epam.lab.exam.library.dto.UserDTO;
-import com.epam.lab.exam.library.dto.UserSessionDTO;
-import com.epam.lab.exam.library.exception.ClientRequestException;
-import com.epam.lab.exam.library.service.UserService;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -44,8 +42,8 @@ public class UserController {
 
 	private String login(Model model, LoginDTO dto, UserSessionDTO userSession) throws ClientRequestException {
 		log.info("user logging in: {}", dto);
-		UserDTO user = userService.authenticateUser(dto);
-		log.info("user authenticated: {}", user);
+		UserDTO user = userService.findByLogin(dto.getUsername());
+		log.info("user logged in: {}", user);
 		userSession = userSession.enrich(user);
 		model.addAttribute("userSession", userSession);
 		return View.defaultFor(userSession.getRoleType());

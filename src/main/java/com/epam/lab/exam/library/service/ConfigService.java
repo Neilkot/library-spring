@@ -1,11 +1,14 @@
 package com.epam.lab.exam.library.service;
 
+import com.epam.lab.exam.library.model.RequestType;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import lombok.Data;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
-@Data
+@Getter
 @Service
 public class ConfigService {
 
@@ -23,4 +26,15 @@ public class ConfigService {
 	
 	@Value("${checksum.algorithm}")
 	private String checksumAlgorithm;
+
+	public Instant getExpirationDate(RequestType requestType) {
+		switch (requestType) {
+			case ABONEMENT:
+				return Instant.now().plus(getAbonementExpirationDays(), ChronoUnit.DAYS);
+			case READING_AREA:
+				return Instant.now().plus(getReadingAreaExpirationHours(), ChronoUnit.HOURS);
+			default:
+				throw new IllegalArgumentException("not supported " + this);
+		}
+	}
 }

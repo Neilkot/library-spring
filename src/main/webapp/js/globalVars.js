@@ -14,18 +14,23 @@ function formatDates() {
 function formatAsLocalDate(utcDate) {
 	var date = new Date(utcDate);
 	date.toLocaleString(locale, { timeZone: timeZone })
-	return formatDate(date);
+	var formatted = formatDate(date)
+	console.log(date + " => " + formatted)
+	return formatted;
 }
 
 function formatDate(date_ob) {
-	let date = ("0" + date_ob.getDate()).slice(-2);
-	let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+	let day = date_ob.getDate();
+	let month = date_ob.getMonth() + 1;
 	let year = date_ob.getFullYear();
 	let hours = date_ob.getHours();
 	let minutes = date_ob.getMinutes();
-	return year + "-" + month + "-" + date + " " + hours + ":" + minutes;
-
-
+	console.log("minutes=" + minutes)
+	month = (month < 10 ? "0" : "") + month;
+    day = (day < 10 ? "0" : "") + day;
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+	return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
 }
 
 function getCurrPageSuffix() {

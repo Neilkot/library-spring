@@ -1,7 +1,10 @@
 package com.epam.lab.exam.library.controller;
 
-import java.util.List;
-
+import com.epam.lab.exam.library.dto.*;
+import com.epam.lab.exam.library.exception.ClientRequestException;
+import com.epam.lab.exam.library.service.BookRequestService;
+import com.epam.lab.exam.library.service.ConfigService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.epam.lab.exam.library.dto.BookRequestDTO;
-import com.epam.lab.exam.library.dto.IdentityDTO;
-import com.epam.lab.exam.library.dto.PageDTO;
-import com.epam.lab.exam.library.dto.PendingRequestDTO;
-import com.epam.lab.exam.library.dto.UserSessionDTO;
-import com.epam.lab.exam.library.exception.ClientRequestException;
-import com.epam.lab.exam.library.service.BookRequestService;
-import com.epam.lab.exam.library.service.ConfigService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -67,17 +61,17 @@ public class LibrarianController implements GenericController {
 	}
 
 	@GetMapping("/approved-request")
-	public ModelAndView approvedReuqestGet(Model model, @ModelAttribute("userSession") UserSessionDTO userSession) {
-		return getApprovedReuqests(model, PageDTO.builder().currPage(0).build(), userSession);
+	public ModelAndView approvedRequestGet(Model model, @ModelAttribute("userSession") UserSessionDTO userSession) {
+		return getApprovedRequests(model, PageDTO.builder().currPage(0).build(), userSession);
 	}
 
 	@PostMapping("/approved-request")
-	public ModelAndView approvedReuqestPost(Model model, @ModelAttribute("page") PageDTO dto,
+	public ModelAndView approvedRequestPost(Model model, @ModelAttribute("page") PageDTO dto,
 			@ModelAttribute("userSession") UserSessionDTO userSession) {
-		return getApprovedReuqests(model, dto, userSession);
+		return getApprovedRequests(model, dto, userSession);
 	}
 
-	private ModelAndView getApprovedReuqests(Model model, PageDTO dto, UserSessionDTO userSession) {
+	private ModelAndView getApprovedRequests(Model model, PageDTO dto, UserSessionDTO userSession) {
 		int currPage = dto.getCurrPage();
 		int pageSize = configService.getDefaultPageSize();
 		log.info("getting approved requests currPage={} pageSize={}", currPage, pageSize);

@@ -136,10 +136,7 @@
 	</form:form>
 </body>
 <script>
-	$(document).ready(function() {
-		
-	});
-	
+
 	function returnBook(requestId) {
 		$("#return-book-request-id").val(requestId)
 		$("#return-book-request-form").submit()

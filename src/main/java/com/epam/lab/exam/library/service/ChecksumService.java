@@ -1,13 +1,12 @@
 package com.epam.lab.exam.library.service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javax.xml.bind.DatatypeConverter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 public class ChecksumService implements PasswordEncoder {
@@ -21,7 +20,7 @@ public class ChecksumService implements PasswordEncoder {
 			byte[] digest = md.digest(value.getBytes());
 			return DatatypeConverter.printHexBinary(digest).toUpperCase();
 		} catch (NoSuchAlgorithmException e) {
-			throw new IllegalStateException("Couldn't generage checksum." + e.getMessage(), e);
+			throw new IllegalStateException("Couldn't generate checksum." + e.getMessage(), e);
 		}
 	}
 

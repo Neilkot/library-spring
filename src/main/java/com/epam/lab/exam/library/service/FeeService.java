@@ -1,16 +1,15 @@
 package com.epam.lab.exam.library.service;
 
+import com.epam.lab.exam.library.dto.BookRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.epam.lab.exam.library.dto.BookRequestDTO;
 
 @Service
 public class FeeService {
@@ -24,11 +23,11 @@ public class FeeService {
 	}
 
 	private void enrichWithFee(BookRequestDTO request) {
-		String feeColumn = doCalculateFee(request) ? calculateFee(request.getExpirationDate()).toString() : "-";
+		String feeColumn = shouldCalculateFee(request) ? calculateFee(request.getExpirationDate()).toString() : "-";
 		request.setFee(feeColumn);
 	}
 
-	private boolean doCalculateFee(BookRequestDTO request) {
+	private boolean shouldCalculateFee(BookRequestDTO request) {
 		return request.getReturnDate() == null && request.getExpirationDate().isBefore(Instant.now());
 	}
 

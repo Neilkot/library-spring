@@ -27,14 +27,13 @@ import lombok.NoArgsConstructor;
 public class BookRequestJournal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_request_id", nullable = false)
 	private BookRequest bookRequest;
 
-	@Column(name = "create_date")
+	@Column(name = "create_date", nullable = false)
 	private Instant createDate;
 
 	@Column(name = "approve_date")

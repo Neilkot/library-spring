@@ -1,20 +1,14 @@
 package com.epam.lab.exam.library.repository;
 
-import java.util.List;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
-
-import com.epam.lab.exam.library.dto.BookRequestDTO;
-import com.epam.lab.exam.library.dto.PendingRequestDTO;
 import com.epam.lab.exam.library.model.BookRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 public interface BookRequestRepository extends PagingAndSortingRepository<BookRequest, Integer> {
 
-	List<BookRequest> findByUserId(@Param("user_id") Integer userId, Pageable pageable);
+	List<BookRequest> findByUserId(Integer userId, Pageable pageable);
 
 
 }

@@ -21,11 +21,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "book_items")
-
 public class BookItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
